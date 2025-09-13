@@ -1,0 +1,87 @@
+/* Base Styles and Layout */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.container {
+    max-width: 1280px;
+}
+
+/* Card Styling */
+.card {
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Video Link Styling */
+a.video-link {
+    background-color: #10B981;
+    /* Tailwind's green-500 */
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin-right: 0.5rem;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+a.video-link:hover {
+    background-color: #059669;
+    /* Tailwind's green-600 */
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeInDown {
+    animation: fadeInDown 1s ease-out;
+}
+
+.animate-fadeInUp {
+    animation: fadeInUp 1s ease-out;
+}
+
+/* Responsive Menu */
+.menu-full-screen {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .menu-full-screen {
+        display: flex;
+    }
+}
