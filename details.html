@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Movimento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+
+    <!-- Cabeçalho Principal -->
+    <header class="bg-gradient-to-r from-green-700 to-green-500 text-white p-8 text-center shadow-md">
+        <h1
+            class="text-4xl font-extrabold mb-2 inline-block cursor-pointer transform transition-transform duration-300 hover:scale-110">
+            Detalhes do Movimento</h1>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container mx-auto p-6 flex-grow">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-4xl mx-auto">
+            <a href="index.html" class="inline-flex items-center text-green-700 hover:underline mb-6">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Voltar para a Lista
+            </a>
+            <div id="movement-details">
+                <!-- Detalhes do movimento serão injetados aqui via JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+        <p>&copy; 2024 CinesiaHub. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movimentoParam = urlParams.get('movimento');
+            const movementDetailsDiv = document.getElementById('movement-details');
+
+            if (!movimentoParam) {
+                movementDetailsDiv.innerHTML = '<p class="text-red-500 text-center">Movimento não especificado na URL.</p>';
+                return;
+            }
+
+            const movimento = movimentos.find(mov => mov.movimento === movimentoParam);
+
+            if (!movimento) {
+                movementDetailsDiv.innerHTML = `<p class="text-red-500 text-center">Nenhum detalhe encontrado para o movimento "${movimentoParam}".</p>`;
+                return;
+            }
+
+            const testesHTML = movimento.testes.map(teste => {
+                const videos = teste.videos.map((video, index) => `
+          <div class="video-container mt-2">
+            <h4 class="font-semibold text-gray-700">${teste.nome} - Vídeo ${index + 1}</h4>
+            <div class="aspect-w-16 aspect-h-9 mt-1">
+              <iframe 
+                class="w-full h-auto rounded-lg shadow-md" 
+                src="https://www.youtube.com/embed/${video.split('v=')[1]}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        `).join('');
+                return videos;
+            }).join('');
+
+            const funcionamentoNormalHTML = movimento.funcionamentoNormalVideos.map((video, index) => `
+        <div class="video-container mt-2">
+          <h4 class="font-semibold text-gray-700">Vídeo ${index + 1}</h4>
+          <div class="aspect-w-16 aspect-h-9 mt-1">
+            <iframe 
+              class="w-full h-auto rounded-lg shadow-md" 
+              src="https://www.youtube.com/embed/${video.split('v=')[1]}" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      `).join('');
+
+            movementDetailsDiv.innerHTML = `
+        <h2 class="text-3xl font-bold text-green-800 mb-4">${movimento.movimento}</h2>
+        <div class="bg-gray-50 p-6 rounded-xl shadow-inner space-y-4">
+          <p><b>Articulação:</b> ${movimento.articulacao}</p>
+          <p><b>Músculos Agonistas:</b> ${movimento.agonistas}</p>
+          <p><b>Músculos Antagonistas:</b> ${movimento.antagonistas}</p>
+          <p><b>Músculos Sinergistas:</b> ${movimento.sinergistas}</p>
+          <p><b>Músculos Estabilizadores:</b> ${movimento.estabilizadores}</p>
+        </div>
+
+        <div class="mt-8 space-y-4">
+          <h3 class="text-xl font-semibold text-gray-800 border-b border-gray-300 pb-2">Testes Musculares</h3>
+          ${testesHTML}
+        </div>
+        
+        <div class="mt-8 space-y-4">
+          <h3 class="text-xl font-semibold text-gray-800 border-b border-gray-300 pb-2">Vídeos de Funcionamento Normal</h3>
+          ${funcionamentoNormalHTML}
+        </div>
+      `;
+        });
+    </script>
+</body>
+
+</html>
