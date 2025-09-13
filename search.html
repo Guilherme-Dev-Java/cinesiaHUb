@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinesiaHub - Pesquisa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .animate-fadeInDown {
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Cabeçalho Principal -->
+    <header class="bg-gradient-to-r from-green-700 to-green-500 text-white p-8 text-center shadow-md">
+        <h1
+            class="text-4xl font-extrabold mb-2 animate-fadeInDown inline-block cursor-pointer transform transition-transform duration-300 hover:scale-110">
+            CinesiaHub</h1>
+        <p class="text-lg font-light opacity-80 animate-fadeInUp">Pesquise por movimentos e testes.</p>
+    </header>
+
+    <!-- Menu de Navegação -->
+    <nav class="bg-green-800 p-4 shadow-lg sticky top-0 z-20">
+        <div class="container mx-auto flex items-center justify-between md:justify-center">
+            <button id="menu-btn" class="text-white text-2xl md:hidden">&#9776;</button>
+            <ul id="menu"
+                class="hidden flex-col bg-green-700 absolute top-16 left-4 right-4 rounded-lg shadow-lg z-10 p-4 md:static md:flex md:flex-row md:space-x-4 md:bg-transparent">
+                <li><a href="index.html"
+                        class="block px-4 py-2 text-white hover:bg-green-600 rounded-lg transition-colors">Início</a>
+                </li>
+                <li><a href="search.html"
+                        class="block px-4 py-2 text-white hover:bg-green-600 rounded-lg transition-colors">Pesquisar</a>
+                </li>
+                <li class="md:relative md:block group">
+                    <a href="#"
+                        class="block px-4 py-2 text-white hover:bg-green-600 rounded-lg transition-colors">Articulações
+                        &#9662;</a>
+                    <ul
+                        class="flex flex-col md:absolute md:hidden md:group-hover:block md:bg-green-700 md:rounded-lg md:shadow-lg md:mt-2 md:w-48">
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Ombro')">Ombro</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Cotovelo')">Cotovelo</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Antebraço')">Antebraço</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Punho')">Punho</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Mão/Dedos')">Mão/Dedos</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Pescoço')">Pescoço</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Coluna')">Coluna</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Quadril')">Quadril</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Joelho')">Joelho</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Tornozelo')">Tornozelo</a></li>
+                        <li><a href="#" class="block px-4 py-2 text-white hover:bg-green-600"
+                                onclick="filterArticulacao('Pés')">Pés</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="container mx-auto p-6">
+        <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-8">
+            <input type="text" id="searchInput" placeholder="Pesquisar por movimento, articulação ou músculo..."
+                class="w-full md:w-1/2 p-3 border-2 border-green-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-700 transition-all duration-300">
+        </div>
+        <div id="resultsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Resultados da pesquisa serão injetados aqui via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+        <p>&copy; 2024 CinesiaHub. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const menuBtn = document.getElementById('menu-btn');
+            const menu = document.getElementById('menu');
+
+            /**
+             * Exibe os movimentos na interface do usuário.
+             * @param {Array} movs - O array de objetos de movimento para exibir.
+             */
+            function displayMovimentos(movs) {
+                resultsContainer.innerHTML = '';
+                if (movs.length === 0) {
+                    resultsContainer.innerHTML = '<p class="text-center text-gray-500 text-lg mt-10">Nenhum resultado encontrado. Tente outra busca.</p>';
+                    return;
+                }
+                movs.forEach(mov => {
+                    const card = document.createElement('div');
+                    card.className = 'card bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105';
+
+                    const testesHTML = mov.testes.map(teste => `
+            <div class="mt-4">
+              <h4 class="font-semibold text-gray-800">${teste.nome}</h4>
+            </div>
+          `).join('');
+
+                    card.innerHTML = `
+            <a href="details.html?movimento=${encodeURIComponent(mov.movimento)}" class="no-underline">
+              <h3 class="text-2xl font-bold text-green-700">${mov.movimento}</h3>
+            </a>
+            <p class="text-gray-700 mt-2"><b>Articulação:</b> ${mov.articulacao}</p>
+            <p class="text-gray-700"><b>Agonistas:</b> ${mov.agonistas}</p>
+            <p class="text-gray-700"><b>Antagonistas:</b> ${mov.antagonistas}</p>
+            ${testesHTML}
+            <div class="mt-4">
+              <a href="details.html?movimento=${encodeURIComponent(mov.movimento)}" class="inline-block bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors duration-200">Ver detalhes</a>
+            </div>
+          `;
+                    resultsContainer.appendChild(card);
+                });
+            }
+
+            function handleSearch() {
+                const query = searchInput.value.toLowerCase();
+                const filteredMovimentos = movimentos.filter(mov => {
+                    const movimentoMatch = mov.movimento.toLowerCase().includes(query);
+                    const articulacaoMatch = mov.articulacao.toLowerCase().includes(query);
+                    const agonistasMatch = mov.agonistas.toLowerCase().includes(query);
+                    const antagonistasMatch = mov.antagonistas.toLowerCase().includes(query);
+                    return movimentoMatch || articulacaoMatch || agonistasMatch || antagonistasMatch;
+                });
+                displayMovimentos(filteredMovimentos);
+            }
+
+            searchInput.addEventListener('input', handleSearch);
+
+            // Exibir todos os movimentos ao carregar a página
+            displayMovimentos(movimentos);
+
+            // Adicionar lógica do menu
+            menuBtn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+
+</html>
